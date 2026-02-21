@@ -1,4 +1,3 @@
-
 const Home = () => {
   return (
     <section className="bg-gray-100 min-h-screen py-16">
@@ -9,7 +8,7 @@ const Home = () => {
 
           <div>
             <h1 className="text-3xl lg:text-4xl font-extrabold text-gray-900">
-              Empowering Women with Smart, Safe Routes — Anytime, Anywhere.
+              Turning every journey into a safer experience.
             </h1>
 
             <p className="mt-4 text-gray-600 max-w-xl">
@@ -28,17 +27,23 @@ const Home = () => {
 
             <div className="mt-6 flex gap-6 text-sm text-gray-500">
               <div>120+ safe reports</div>
-              <div>Designed for everyone</div>
+              <div>Designed for all</div>
               <div>Real-time updates</div>
             </div>
           </div>
 
-          {/* Map Placeholder */}
-          <div className="bg-white rounded-lg shadow-md h-64 flex items-center justify-center text-gray-400">
-            Mini Map Here
+          {/* Map */}
+          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+
+            <img
+              src="https://tse2.mm.bing.net/th/id/OIP.cn7cALOrLawciXnJS7lXMQHaHa?pid=Api&P=0&h=180"
+              alt="Map"
+              className="w-full h-64 object-cover"
+            />
+
           </div>
 
-        </div>
+        </div>   {/* ❗ HERO div close */}
 
         {/* FEATURES */}
         <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -51,7 +56,7 @@ const Home = () => {
             <div key={index} className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
               <h3 className="font-semibold text-gray-800">{item}</h3>
               <p className="text-sm text-gray-500 mt-2">
-                "A secure and reliable platform designed to improve safety for everyone."
+                A secure and reliable platform to improve safety.
               </p>
             </div>
           ))}
