@@ -2,3 +2,37 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body{
+  margin:0;
+  font-family: Arial;
+}
+
+
+/* Navbar */
+
+.navbar{
+
+display:flex;
+
+justify-content:space-between;
+
+background-color:#ff4d6d;
+
+color:white;
+
+padding:15px;
+
+}
+
+.menu a{
+
+color:white;
+
+margin-left:20px;
+
+text-decoration:none;
+
+font-weight:bold;
+
+}
