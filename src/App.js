@@ -1,15 +1,27 @@
-
-import Navbar from "./components/Navbar";
+import { useState } from "react";
+import Welcome from "./pages/Welcome"
 import Home from "./pages/Home";
-import Footer from "./components/Footer";
+import BottomNav from "./components/BottomNav";
 
 function App() {
+
+  const [startApp, setStartApp] = useState(false);
+
   return (
-    <>
-      <Navbar />
-      <Home />
-      <Footer />
-    </>
+
+    <div>
+
+      {startApp ? (
+        <>
+          <Home />
+          <BottomNav />
+        </>
+      ) : (
+        <Welcome setStartApp={setStartApp}/>
+      )}
+
+    </div>
+
   );
 }
 

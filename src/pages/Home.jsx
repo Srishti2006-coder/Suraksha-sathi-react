@@ -28,7 +28,7 @@ const Home = () => {
 
             <div className="mt-6 flex gap-6 text-sm text-gray-500">
               <div>120+ safe reports</div>
-              <div>Designed by women</div>
+              <div>Designed for everyone</div>
               <div>Real-time updates</div>
             </div>
           </div>
@@ -51,7 +51,7 @@ const Home = () => {
             <div key={index} className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
               <h3 className="font-semibold text-gray-800">{item}</h3>
               <p className="text-sm text-gray-500 mt-2">
-                Clean, secure and reliable solution for women’s safety.
+                "A secure and reliable platform designed to improve safety for everyone."
               </p>
             </div>
           ))}
