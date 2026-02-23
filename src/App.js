@@ -18,15 +18,20 @@ function App() {
 const [page,setPage] = useState("welcome");
 
 
-// Pages where navbar show hoga
+// Navbar kin pages pe show hoga
 
-const showNavbar =
-page==="home" ||
-page==="route" ||
-page==="community" ||
-page==="about" ||
-page==="sos" ||
-page==="report";
+const pagesWithNavbar = [
+"home",
+"route",
+"community",
+"about",
+"sos",
+"report"
+];
+
+const showNavbar = pagesWithNavbar.includes(page);
+
+
 
 return (
 
@@ -35,9 +40,9 @@ return (
 
 {/* Navbar */}
 
-{showNavbar &&
+{showNavbar && (
 <Navbar setPage={setPage}/>
-}
+)}
 
 
 
