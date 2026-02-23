@@ -11,7 +11,7 @@ import About from "./pages/About";
 import SOS from "./pages/SOS";
 import Report from "./pages/Report";
 
-import BottomNav from "./components/BottomNav";
+import Navbar from "./components/Navbar";
 
 function App() {
 
@@ -19,68 +19,44 @@ function App() {
 
   return (
 
-    <div>
+    <div className="min-h-screen bg-gray-100">
 
-      {/* WELCOME */}
-      {page === "welcome" && (
-        <Welcome setPage={setPage}/>
-      )}
+      {/* Welcome */}
+      {page === "welcome" &&
+        <Welcome setPage={setPage} />
+      }
 
-      {/* LOGIN */}
-      {page === "login" && (
-        <Login setPage={setPage}/>
-      )}
+      {/* Login */}
+      {page === "login" &&
+        <Login setPage={setPage} />
+      }
 
-      {/* SIGNUP */}
-      {page === "signup" && (
-        <Signup setPage={setPage}/>
-      )}
+      {/* Signup */}
+      {page === "signup" &&
+        <Signup setPage={setPage} />
+      }
 
-      {/* HOME */}
-      {page === "home" && (
+
+      {/* Pages with Navbar */}
+
+      {(page === "home" ||
+        page === "route" ||
+        page === "community" ||
+        page === "about" ||
+        page === "sos" ||
+        page === "report") && (
+
         <>
-          <Home />
-          <BottomNav setPage={setPage}/>
-        </>
-      )}
+        
+          <Navbar setPage={setPage} />
 
-      {/* ROUTE FINDER */}
-      {page === "route" && (
-        <>
-          <RouteFinder />
-          <BottomNav setPage={setPage}/>
-        </>
-      )}
+          {page === "home" && <Home />}
+          {page === "route" && <RouteFinder />}
+          {page === "community" && <Community />}
+          {page === "about" && <About />}
+          {page === "sos" && <SOS />}
+          {page === "report" && <Report />}
 
-      {/* COMMUNITY */}
-      {page === "community" && (
-        <>
-          <Community />
-          <BottomNav setPage={setPage}/>
-        </>
-      )}
-
-      {/* ABOUT */}
-      {page === "about" && (
-        <>
-          <About />
-          <BottomNav setPage={setPage}/>
-        </>
-      )}
-
-      {/* SOS */}
-      {page === "sos" && (
-        <>
-          <SOS />
-          <BottomNav setPage={setPage}/>
-        </>
-      )}
-
-      {/* REPORT */}
-      {page === "report" && (
-        <>
-          <Report />
-          <BottomNav setPage={setPage}/>
         </>
       )}
 

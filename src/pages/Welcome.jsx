@@ -1,39 +1,30 @@
-function Welcome({ setStartApp }) {
-
+const Welcome = ({ setPage }) => {
   return (
 
-    <div className="h-screen bg-gradient-to-b from-gray-100 to-white flex flex-col justify-center items-center">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
 
-      <div className="bg-white p-6 rounded-full shadow-lg mb-6">
+      <div className="bg-white p-10 rounded-xl shadow-md text-center w-80">
 
-        <div className="text-blue-500 text-5xl">
-          🛣️
-        </div>
+        <h1 className="text-3xl font-bold mb-2">
+          Suraksha Sathi
+        </h1>
+
+        <p className="text-gray-500 mb-6">
+          Turning every journey into a safer experience.
+        </p>
+
+        <button
+          onClick={() => setPage("login")}
+          className="w-full bg-black text-white py-3 rounded-lg"
+        >
+          Get Started
+        </button>
 
       </div>
-
-      <h1 className="text-3xl font-bold mb-2">
-        SurakshaSathi
-      </h1>
-
-      <p className="text-gray-500 mb-10">
-        Because every journey deserves safety
-      </p>
-
-
-      <button
-        onClick={() => setStartApp(true)}
-        className="bg-blue-500 text-white px-16 py-3 rounded-xl shadow-md"
-      >
-
-        Get Started
-
-      </button>
-
 
     </div>
 
   );
-}
+};
 
 export default Welcome;
