@@ -15,54 +15,85 @@ import Navbar from "./components/Navbar";
 
 function App() {
 
-  const [page, setPage] = useState("welcome");
-
-  return (
-
-    <div className="min-h-screen bg-gray-100">
-
-      {/* Welcome */}
-      {page === "welcome" &&
-        <Welcome setPage={setPage} />
-      }
-
-      {/* Login */}
-      {page === "login" &&
-        <Login setPage={setPage} />
-      }
-
-      {/* Signup */}
-      {page === "signup" &&
-        <Signup setPage={setPage} />
-      }
+const [page,setPage] = useState("welcome");
 
 
-      {/* Pages with Navbar */}
+// Pages where navbar show hoga
 
-      {(page === "home" ||
-        page === "route" ||
-        page === "community" ||
-        page === "about" ||
-        page === "sos" ||
-        page === "report") && (
+const showNavbar =
+page==="home" ||
+page==="route" ||
+page==="community" ||
+page==="about" ||
+page==="sos" ||
+page==="report";
 
-        <>
-        
-          <Navbar setPage={setPage} />
+return (
 
-          {page === "home" && <Home />}
-          {page === "route" && <RouteFinder />}
-          {page === "community" && <Community />}
-          {page === "about" && <About />}
-          {page === "sos" && <SOS />}
-          {page === "report" && <Report />}
+<div className="min-h-screen bg-slate-50">
 
-        </>
-      )}
 
-    </div>
+{/* Navbar */}
 
-  );
+{showNavbar &&
+<Navbar setPage={setPage}/>
+}
+
+
+
+{/* Pages */}
+
+
+{page==="welcome" &&
+<Welcome setPage={setPage}/>
+}
+
+
+{page==="login" &&
+<Login setPage={setPage}/>
+}
+
+
+{page==="signup" &&
+<Signup setPage={setPage}/>
+}
+
+
+{page==="home" &&
+<Home setPage={setPage}/>
+}
+
+
+{page==="route" &&
+<RouteFinder setPage={setPage}/>
+}
+
+
+{page==="community" &&
+<Community setPage={setPage}/>
+}
+
+
+{page==="about" &&
+<About setPage={setPage}/>
+}
+
+
+{page==="sos" &&
+<SOS setPage={setPage}/>
+}
+
+
+{page==="report" &&
+<Report setPage={setPage}/>
+}
+
+
+
+</div>
+
+);
+
 }
 
 export default App;

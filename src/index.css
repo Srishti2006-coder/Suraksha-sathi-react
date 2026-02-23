@@ -4,7 +4,10 @@
 
 body{
   margin:0;
-  font-family: Arial;
+  
+font-family:system-ui;
+
+scroll-behavior:smooth;
 
   /* Light gradient background */
   background: linear-gradient(

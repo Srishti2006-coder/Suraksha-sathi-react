@@ -1,92 +1,190 @@
+
+import { useState } from "react";
+
 const Navbar = ({ setPage }) => {
-  return (
 
-<header className="bg-gradient-to-r from-indigo-600 to-indigo-400 text-white p-4 shadow-md">
+const [menuOpen,setMenuOpen] = useState(false);
 
-<div className="max-w-6xl mx-auto flex items-center justify-between">
+return (
+
+<header className="sticky top-0 z-50 bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-lg">
+
+<div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
 
 
-{/* Left */}
+{/* Logo */}
 
-<div className="flex items-center gap-4">
+<div
+onClick={()=>setPage("home")}
+className="cursor-pointer"
+>
 
-<div>
+<div className="text-xl font-bold">
 
-<div className="text-lg font-semibold">
 Suraksha Sathi
+
 </div>
 
-<div className="text-sm opacity-90">
+<div className="text-xs opacity-90">
+
 Because Every Journey Deserves Safety
-</div>
 
 </div>
 
+</div>
 
-{/* Menu */}
 
-<div className="ml-8 hidden md:flex gap-4">
+
+{/* Desktop Menu */}
+
+<div className="hidden md:flex gap-5 items-center">
 
 <button
-onClick={() => setPage("home")}
-className="text-sm px-3 py-1 rounded hover:bg-white/10"
+onClick={()=>setPage("home")}
+className="px-3 py-1 rounded hover:bg-white/10 transition"
 >
+
 Home
+
 </button>
 
+
 <button
-onClick={() => setPage("route")}
-className="text-sm px-3 py-1 rounded hover:bg-white/10"
+onClick={()=>setPage("route")}
+className="px-3 py-1 rounded hover:bg-white/10 transition"
 >
+
 Route Finder
+
 </button>
 
+
 <button
-onClick={() => setPage("community")}
-className="text-sm px-3 py-1 rounded hover:bg-white/10"
+onClick={()=>setPage("community")}
+className="px-3 py-1 rounded hover:bg-white/10 transition"
 >
+
 Community
+
 </button>
 
+
 <button
-onClick={() => setPage("about")}
-className="text-sm px-3 py-1 rounded hover:bg-white/10"
+onClick={()=>setPage("about")}
+className="px-3 py-1 rounded hover:bg-white/10 transition"
 >
+
 About
+
 </button>
 
-</div>
 
 </div>
 
 
-{/* Right */}
 
-<div className="flex gap-3">
+{/* Right Buttons */}
+
+<div className="flex gap-3 items-center">
+
 
 <button
-onClick={() => setPage("sos")}
-className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg font-semibold"
+onClick={()=>setPage("sos")}
+className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg font-semibold shadow-md transition hover:scale-105"
 >
+
 SOS
+
+</button>
+
+
+
+<button
+onClick={()=>setPage("report")}
+className="bg-white text-indigo-600 px-4 py-2 rounded-lg font-semibold shadow-md transition hover:scale-105"
+>
+
+Report
+
+</button>
+
+
+
+{/* Mobile Button */}
+
+<button
+onClick={()=>setMenuOpen(!menuOpen)}
+className="md:hidden text-2xl ml-2"
+>
+
+☰
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+{/* Mobile Menu */}
+
+{menuOpen && (
+
+<div className="md:hidden bg-indigo-600 px-4 pb-4 space-y-3">
+
+<button
+onClick={()=>setPage("home")}
+className="block w-full text-left"
+>
+
+Home
+
 </button>
 
 
 <button
-onClick={() => setPage("report")}
-className="bg-white text-indigo-600 px-4 py-2 rounded-lg font-semibold"
+onClick={()=>setPage("route")}
+className="block w-full text-left"
 >
-Report Area
+
+Route Finder
+
 </button>
 
-</div>
+
+<button
+onClick={()=>setPage("community")}
+className="block w-full text-left"
+>
+
+Community
+
+</button>
+
+
+<button
+onClick={()=>setPage("about")}
+className="block w-full text-left"
+>
+
+About
+
+</button>
 
 
 </div>
+
+)}
+
+
 
 </header>
 
-  );
+);
+
 };
 
 export default Navbar;
