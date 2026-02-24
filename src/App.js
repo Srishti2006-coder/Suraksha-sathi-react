@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 import Welcome from "./pages/Welcome";
@@ -12,6 +13,7 @@ import SOS from "./pages/SOS";
 import Report from "./pages/Report";
 
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";   // ✅ Footer import
 
 function App() {
 
@@ -32,10 +34,14 @@ const pagesWithNavbar = [
 const showNavbar = pagesWithNavbar.includes(page);
 
 
+// ✅ Footer bhi same pages pe show hoga
+
+const showFooter = pagesWithNavbar.includes(page);
+
 
 return (
 
-<div className="min-h-screen bg-slate-50">
+<div className="min-h-screen bg-slate-50 flex flex-col">
 
 
 {/* Navbar */}
@@ -48,6 +54,7 @@ return (
 
 {/* Pages */}
 
+<div className="flex-grow">
 
 {page==="welcome" &&
 <Welcome setPage={setPage}/>
@@ -93,6 +100,15 @@ return (
 <Report setPage={setPage}/>
 }
 
+</div>
+
+
+
+{/* ✅ Footer */}
+
+{showFooter && (
+<Footer/>
+)}
 
 
 </div>

@@ -127,7 +127,8 @@ Our Story
 
 <p className="mt-3 text-gray-600">
 
-Suraksha Sathi began as a hackathon project: students who felt unsafe walking home wanted a simple tool to surface safer paths.
+Suraksha Sathi began as a hackathon project: students who felt unsafe walking home wanted a simple tool to surface safer paths. We built a prototype, tested with peers and iterated based on real feedback from the community.Judges praised the clarity and real-world utility — we focused on reliability and ease of reporting.
+
 
 </p>
 
