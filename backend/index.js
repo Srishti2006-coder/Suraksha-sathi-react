@@ -1,5 +1,6 @@
 
 // backend/index.js
+
 const express = require('express');
 const mongoose = require('./db');
 
@@ -15,3 +16,6 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+
+

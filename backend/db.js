@@ -1,11 +1,12 @@
-// backend/db.js
-const mongoose = require('mongoose');
-require('dotenv').config();
+const mongoose = require("mongoose");
 
-const mongoURI = process.env.MONGO_URI;
-
-mongoose.connect(mongoURI)  // bas itna hi, extra options hata do
-.then(() => console.log("✅ MongoDB connected successfully"))
-.catch((err) => console.error("❌ MongoDB connection error:", err));
+// Password me @ ko %40 encode kiya
+mongoose.connect("mongodb+srv://srishti:Srishti%40123@cluster0.jvbbxng.mongodb.net/test")
+.then(() => {
+    console.log("MongoDB Connected ✅");
+})
+.catch((err) => {
+    console.log("Error:", err);
+});
 
 module.exports = mongoose;
