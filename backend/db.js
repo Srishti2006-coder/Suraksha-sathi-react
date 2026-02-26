@@ -1,16 +1,10 @@
-
 // backend/db.js
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-// MongoDB URI from .env file
 const mongoURI = process.env.MONGO_URI;
 
-// Connect to MongoDB
-mongoose.connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
+mongoose.connect(mongoURI)  // bas itna hi, extra options hata do
 .then(() => console.log("✅ MongoDB connected successfully"))
 .catch((err) => console.error("❌ MongoDB connection error:", err));
 
