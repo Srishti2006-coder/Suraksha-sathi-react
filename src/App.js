@@ -9,11 +9,12 @@ import Home from "./pages/Home";
 import RouteFinder from "./pages/RouteFinder";
 import Community from "./pages/Community";
 import About from "./pages/About";
+import Profile from "./pages/Profile";
 import SOS from "./pages/SOS";
 import Report from "./pages/Report";
 
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";   // ✅ Footer import
+import Footer from "./components/Footer";
 
 function App() {
 
@@ -27,6 +28,7 @@ const pagesWithNavbar = [
 "route",
 "community",
 "about",
+"profile",
 "sos",
 "report"
 ];
@@ -34,7 +36,7 @@ const pagesWithNavbar = [
 const showNavbar = pagesWithNavbar.includes(page);
 
 
-// ✅ Footer bhi same pages pe show hoga
+// Footer bhi same pages pe show hoga
 
 const showFooter = pagesWithNavbar.includes(page);
 
@@ -60,41 +62,37 @@ return (
 <Welcome setPage={setPage}/>
 }
 
-
 {page==="login" &&
 <Login setPage={setPage}/>
 }
-
 
 {page==="signup" &&
 <Signup setPage={setPage}/>
 }
 
-
 {page==="home" &&
 <Home setPage={setPage}/>
 }
-
 
 {page==="route" &&
 <RouteFinder setPage={setPage}/>
 }
 
-
 {page==="community" &&
 <Community setPage={setPage}/>
 }
-
 
 {page==="about" &&
 <About setPage={setPage}/>
 }
 
+{page==="profile" &&
+<Profile setPage={setPage}/>
+}
 
 {page==="sos" &&
 <SOS setPage={setPage}/>
 }
-
 
 {page==="report" &&
 <Report setPage={setPage}/>
@@ -104,7 +102,7 @@ return (
 
 
 
-{/* ✅ Footer */}
+{/* Footer */}
 
 {showFooter && (
 <Footer/>

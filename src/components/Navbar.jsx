@@ -79,6 +79,16 @@ About
 </button>
 
 
+<button
+onClick={()=>setPage("profile")}
+className="px-3 py-1 rounded hover:bg-white/10 transition"
+>
+
+Profile
+
+</button>
+
+
 </div>
 
 
@@ -171,6 +181,16 @@ className="block w-full text-left"
 >
 
 About
+
+</button>
+
+
+<button
+onClick={()=>setPage("profile")}
+className="block w-full text-left"
+>
+
+Profile
 
 </button>
 
