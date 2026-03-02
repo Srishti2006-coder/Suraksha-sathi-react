@@ -67,14 +67,18 @@ const hospitalIcon = createIcon("🏥", "#dc2626");
 const marketIcon = createIcon("🛒", "#16a34a");
 const reportIcon = createIcon("⚠️", "#dc2626");
 
-// Component to update map center
-const MapUpdater = ({ center }) => {
+// Component to update map center and fit bounds
+const MapUpdater = ({ center, geometry }) => {
   const map = useMap();
   useEffect(() => {
-    if (center) {
+    if (geometry && geometry.length > 0) {
+      // Create bounds from route geometry
+      const bounds = L.latLngBounds(geometry.map(c => [c.lat, c.lng]));
+      map.fitBounds(bounds, { padding: [50, 50] });
+    } else if (center) {
       map.setView([center.lat, center.lng], map.getZoom());
     }
-  }, [center, map]);
+  }, [center, geometry, map]);
   return null;
 };
 
@@ -423,7 +427,7 @@ const RouteFinder = ({ setPage }) => {
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <MapUpdater center={selectedRoute?.geometry?.[0]} />
+                <MapUpdater center={selectedRoute?.geometry?.[0]} geometry={selectedRoute?.geometry} />
                 
                 {/* Start marker */}
                 {startLocation && (

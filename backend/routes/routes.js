@@ -38,6 +38,7 @@ const makeRequest = (url, needsUserAgent = false) => {
 router.get("/geocode", async (req, res) => {
     try {
         const { q } = req.query;
+        console.log("Geocode request for:", q);
         
         if (!q || q.length < 2) {
             return res.status(400).json({ msg: "Search query too short" });
@@ -46,10 +47,13 @@ router.get("/geocode", async (req, res) => {
         // Use Nominatim (OpenStreetMap) for geocoding
         const encodedQuery = encodeURIComponent(q);
         const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodedQuery}&limit=5&addressdetails=1`;
+        console.log("Calling Nominatim:", url);
         
         const data = await makeRequest(url, true);
+        console.log("Nominatim response:", data);
         
         if (!data || data.length === 0) {
+            console.log("No results from Nominatim");
             return res.json({ results: [] });
         }
         
@@ -62,8 +66,10 @@ router.get("/geocode", async (req, res) => {
             address: item.address
         }));
         
+        console.log("Returning results:", results.length);
         res.json({ results });
     } catch (err) {
+        console.error("Geocode error:", err);
         res.status(500).json({ error: err.message });
     }
 });
