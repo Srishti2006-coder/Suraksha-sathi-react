@@ -6,10 +6,18 @@ const https = require("https");
 const http = require("http");
 
 // Helper function to make HTTP requests
-const makeRequest = (url) => {
+const makeRequest = (url, needsUserAgent = false) => {
     return new Promise((resolve, reject) => {
         const client = url.startsWith("https") ? https : http;
-        client.get(url, (res) => {
+        
+        const options = {};
+        if (needsUserAgent) {
+            options.headers = {
+                'User-Agent': 'SurakshaSathi/1.0'
+            };
+        }
+        
+        const req = client.request(url, options, (res) => {
             let data = "";
             res.on("data", (chunk) => data += chunk);
             res.on("end", () => {
@@ -19,7 +27,10 @@ const makeRequest = (url) => {
                     reject(e);
                 }
             });
-        }).on("error", reject);
+        });
+        
+        req.on("error", reject);
+        req.end();
     });
 };
 
@@ -36,7 +47,7 @@ router.get("/geocode", async (req, res) => {
         const encodedQuery = encodeURIComponent(q);
         const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodedQuery}&limit=5&addressdetails=1`;
         
-        const data = await makeRequest(url);
+        const data = await makeRequest(url, true);
         
         if (!data || data.length === 0) {
             return res.json({ results: [] });

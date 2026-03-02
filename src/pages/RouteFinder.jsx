@@ -151,7 +151,9 @@ const RouteFinder = ({ setPage }) => {
     }
 
     try {
+      console.log("Searching for:", query);
       const data = await routesAPI.geocode(query);
+      console.log("Geocode results:", data);
       if (isStart) {
         setStartSuggestions(data.results || []);
         setShowStartSuggestions(true);
