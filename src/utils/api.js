@@ -81,6 +81,14 @@ export const safetyPointsAPI = {
 
 // Routes API
 export const routesAPI = {
+    // Geocode - search for places
+    geocode: (query) => apiCall(`/routes/geocode?q=${encodeURIComponent(query)}`),
+    
+    // Get route between two points
+    getRoute: (startLat, startLng, endLat, endLng) => 
+        apiCall(`/routes/route?startLat=${startLat}&startLng=${startLng}&endLat=${endLat}&endLng=${endLng}`),
+    
+    // Calculate safety score for a route
     calculateSafetyScore: (coordinates) => 
         apiCall("/routes/safety-score", { 
             method: "POST", 
