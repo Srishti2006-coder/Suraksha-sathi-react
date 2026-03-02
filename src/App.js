@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Welcome from "./pages/Welcome";
 import Login from "./pages/Login";
@@ -16,102 +15,120 @@ import Report from "./pages/Report";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
+import { isLoggedIn } from "./utils/api";
+
 function App() {
 
-const [page,setPage] = useState("welcome");
+  const [page, setPage] = useState("home");
+
+  // Check auth on mount
+  useEffect(() => {
+    // Check if user is logged in, if so redirect to home
+    if (isLoggedIn()) {
+      setPage("home");
+    }
+  }, []);
+
+  // Navbar kin pages pe show hoga (login & signup have their own navbar)
+  const pagesWithNavbar = [
+    "home",
+    "route",
+    "community",
+    "about",
+    "profile",
+    "sos",
+    "report",
+    "welcome"
+  ];
+
+  const showNavbar = pagesWithNavbar.includes(page);
+
+  // Footer bhi same pages pe show hoga
+  const showFooter = pagesWithNavbar.includes(page);
+
+  // Protected pages that require authentication
+  const protectedPages = ["profile", "sos", "report"];
+
+  const handlePageChange = (newPage) => {
+    // Check if trying to access protected page without login
+    if (protectedPages.includes(newPage) && !isLoggedIn()) {
+      setPage("login");
+      return;
+    }
+    setPage(newPage);
+  };
+
+  return (
+
+    <div className="min-h-screen bg-slate-50 flex flex-col">
 
 
-// Navbar kin pages pe show hoga
+      {/* Navbar */}
 
-const pagesWithNavbar = [
-"home",
-"route",
-"community",
-"about",
-"profile",
-"sos",
-"report"
-];
-
-const showNavbar = pagesWithNavbar.includes(page);
-
-
-// Footer bhi same pages pe show hoga
-
-const showFooter = pagesWithNavbar.includes(page);
-
-
-return (
-
-<div className="min-h-screen bg-slate-50 flex flex-col">
-
-
-{/* Navbar */}
-
-{showNavbar && (
-<Navbar setPage={setPage}/>
-)}
-
-
-
-{/* Pages */}
-
-<div className="flex-grow">
-
-{page==="welcome" &&
-<Welcome setPage={setPage}/>
-}
-
-{page==="login" &&
-<Login setPage={setPage}/>
-}
-
-{page==="signup" &&
-<Signup setPage={setPage}/>
-}
-
-{page==="home" &&
-<Home setPage={setPage}/>
-}
-
-{page==="route" &&
-<RouteFinder setPage={setPage}/>
-}
-
-{page==="community" &&
-<Community setPage={setPage}/>
-}
-
-{page==="about" &&
-<About setPage={setPage}/>
-}
-
-{page==="profile" &&
-<Profile setPage={setPage}/>
-}
-
-{page==="sos" &&
-<SOS setPage={setPage}/>
-}
-
-{page==="report" &&
-<Report setPage={setPage}/>
-}
-
-</div>
+      {showNavbar && (
+        <Navbar setPage={handlePageChange} />
+      )}
 
 
 
-{/* Footer */}
+      {/* Pages */}
 
-{showFooter && (
-<Footer/>
-)}
+      <div className="flex-grow">
+
+        {page === "welcome" &&
+          <Welcome setPage={handlePageChange} />
+        }
+
+        {page === "login" &&
+          <Login setPage={handlePageChange} />
+        }
+
+        {page === "signup" &&
+          <Signup setPage={handlePageChange} />
+        }
+
+        {page === "home" &&
+          <Home setPage={handlePageChange} />
+        }
+
+        {page === "route" &&
+          <RouteFinder setPage={handlePageChange} />
+        }
+
+        {page === "community" &&
+          <Community setPage={handlePageChange} />
+        }
+
+        {page === "about" &&
+          <About setPage={handlePageChange} />
+        }
+
+        {page === "profile" &&
+          <Profile setPage={handlePageChange} />
+        }
+
+        {page === "sos" &&
+          <SOS setPage={handlePageChange} />
+        }
+
+        {page === "report" &&
+          <Report setPage={handlePageChange} />
+        }
+
+      </div>
 
 
-</div>
 
-);
+      {/* Footer */}
+
+      {showFooter && (
+        <Footer />
+      )}
+
+
+    </div>
+
+  );
 
 }
 
