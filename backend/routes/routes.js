@@ -112,7 +112,15 @@ router.get("/route", async (req, res) => {
             duration: route.duration,
             geometry: coordinates,
             alternatives: alternatives,
-            steps: route.legs[0].steps
+            steps: route.legs[0].steps.map(step => ({
+                distance: step.distance,
+                duration: step.duration,
+                instruction: step.maneuver?.instruction || step.name || "Continue",
+                maneuver: step.maneuver?.type || "",
+                modifier: step.maneuver?.modifier || "",
+                name: step.name || "",
+                way_points: step.way_points
+            }))
         });
     } catch (err) {
         res.status(500).json({ error: err.message });
