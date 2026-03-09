@@ -171,8 +171,12 @@ const RouteFinder = ({ setPage }) => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [hasArrived, setHasArrived] = useState(false);
   
-  const startInputRef = useRef(null);
+const startInputRef = useRef(null);
   const endInputRef = useRef(null);
+  
+  // Debounce refs for search
+  const startSearchTimeout = useRef(null);
+  const endSearchTimeout = useRef(null);
 
   useEffect(() => {
     loadData();
@@ -237,13 +241,31 @@ const RouteFinder = ({ setPage }) => {
   const handleStartInputChange = (e) => {
     const value = e.target.value;
     setStartInput(value);
-    searchPlaces(value, true);
+    
+    // Clear previous timeout
+    if (startSearchTimeout.current) {
+      clearTimeout(startSearchTimeout.current);
+    }
+    
+    // Debounce: wait 500ms after user stops typing
+    startSearchTimeout.current = setTimeout(() => {
+      searchPlaces(value, true);
+    }, 500);
   };
 
   const handleEndInputChange = (e) => {
     const value = e.target.value;
     setEndInput(value);
-    searchPlaces(value, false);
+    
+    // Clear previous timeout
+    if (endSearchTimeout.current) {
+      clearTimeout(endSearchTimeout.current);
+    }
+    
+    // Debounce: wait 500ms after user stops typing
+    endSearchTimeout.current = setTimeout(() => {
+      searchPlaces(value, false);
+    }, 500);
   };
 
   const selectStartLocation = (place) => {
@@ -299,8 +321,9 @@ const RouteFinder = ({ setPage }) => {
       }));
       setRouteSteps(steps);
 
-      // Calculate safety score
-      const scoreData = await routesAPI.calculateSafetyScore(routeData.geometry);
+      // Calculate safety score - sample coordinates to avoid large request
+      const sampledGeometry = sampleCoordinatesForAPI(routeData.geometry, 20);
+      const scoreData = await routesAPI.calculateSafetyScore(sampledGeometry);
       setSafetyScore(scoreData.score);
       setSafetyDetails(scoreData.details);
 
@@ -314,6 +337,7 @@ const RouteFinder = ({ setPage }) => {
         distance: routeData.distance,
         duration: routeData.duration,
         safetyScore: scoreData.score,
+        rating: convertScoreToRating(scoreData.score),
         isMain: true,
         description: "Best balance of distance and safety",
         steps: steps
@@ -322,7 +346,8 @@ const RouteFinder = ({ setPage }) => {
       if (routeData.alternatives && routeData.alternatives.length > 0) {
         for (let i = 0; i < routeData.alternatives.length; i++) {
           const alt = routeData.alternatives[i];
-          const altScoreData = await routesAPI.calculateSafetyScore(alt.geometry);
+          const altSampledGeometry = sampleCoordinatesForAPI(alt.geometry, 20);
+          const altScoreData = await routesAPI.calculateSafetyScore(altSampledGeometry);
           allRoutes.push({
             id: i + 2,
             name: `Alternative Route ${i + 1}`,
@@ -330,12 +355,14 @@ const RouteFinder = ({ setPage }) => {
             distance: alt.distance,
             duration: alt.duration,
             safetyScore: altScoreData.score,
+            rating: convertScoreToRating(altScoreData.score),
             isMain: false,
             description: alt.distance < routeData.distance ? "Shorter but may be less safe" : "Longer but safer"
           });
         }
       }
 
+      // Sort by safety score (highest first)
       allRoutes.sort((a, b) => b.safetyScore - a.safetyScore);
 
       const safestRouteId = allRoutes[0].id;
@@ -456,6 +483,46 @@ const RouteFinder = ({ setPage }) => {
     if (score >= 6) return { text: "text-yellow-600", bg: "bg-yellow-50", label: "Moderate" };
     if (score >= 4) return { text: "text-orange-600", bg: "bg-orange-50", label: "Caution" };
     return { text: "text-red-600", bg: "bg-red-50", label: "Unsafe" };
+  };
+
+  // Sample coordinates for API call to avoid large request body
+  const sampleCoordinatesForAPI = (coordinates, numSamples) => {
+    if (!coordinates || coordinates.length <= numSamples) return coordinates;
+    
+    const result = [];
+    const step = (coordinates.length - 1) / (numSamples - 1);
+    
+    for (let i = 0; i < numSamples; i++) {
+      const index = Math.min(Math.floor(i * step), coordinates.length - 1);
+      result.push(coordinates[index]);
+    }
+    
+    return result;
+  };
+
+  // Convert safety score (1-10) to star rating (1-5)
+  const convertScoreToRating = (score) => {
+    if (score >= 9) return 5;
+    if (score >= 7) return 4;
+    if (score >= 5) return 3;
+    if (score >= 3) return 2;
+    return 1;
+  };
+
+  // Render star rating
+  const renderStars = (rating) => {
+    return (
+      <div className="flex items-center gap-0.5">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <span
+            key={star}
+            className={`text-sm ${star <= rating ? "text-yellow-400" : "text-gray-300"}`}
+          >
+            ★
+          </span>
+        ))}
+      </div>
+    );
   };
 
   const formatDistance = (meters) => {
@@ -770,7 +837,7 @@ const RouteFinder = ({ setPage }) => {
 
           {/* Routes List */}
           <div className="bg-white rounded-lg shadow-md p-4">
-            <h3 className="font-semibold mb-4">Available Routes</h3>
+            <h3 className="font-semibold mb-4">Available Routes - Select Your Preferred Route</h3>
             {routes.length === 0 ? (
               <p className="text-slate-500 text-center py-4">
                 {startLocation && endLocation 
@@ -799,10 +866,23 @@ const RouteFinder = ({ setPage }) => {
                               🛡️ Safest
                             </span>
                           )}
+                          {selectedRoute?.id === route.id && (
+                            <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">
+                              ✓ Selected
+                            </span>
+                          )}
                         </div>
                         <div className={`text-xs font-semibold px-2 py-1 rounded ${safety.bg} ${safety.text}`}>
                           {route.safetyScore.toFixed(1)}/10
                         </div>
+                      </div>
+                      {/* Star Rating Display */}
+                      <div className="flex items-center gap-2 mt-2">
+                        <div className="text-xs text-slate-500">Safety Rating:</div>
+                        {renderStars(route.rating || convertScoreToRating(route.safetyScore))}
+                        <span className="text-xs text-slate-400">
+                          ({route.rating || convertScoreToRating(route.safetyScore)}/5)
+                        </span>
                       </div>
                       <div className="text-xs text-slate-500 mt-1">
                         {formatDistance(route.distance)} • {formatDuration(route.duration)}
@@ -813,6 +893,11 @@ const RouteFinder = ({ setPage }) => {
                     </div>
                   );
                 })}
+              </div>
+            )}
+            {routes.length > 1 && (
+              <div className="mt-3 p-2 bg-blue-50 rounded text-xs text-blue-700">
+                💡 Tip: Click on a route to select it. Routes are sorted by safety rating (highest first).
               </div>
             )}
           </div>

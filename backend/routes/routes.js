@@ -10,10 +10,13 @@ const makeRequest = (url, needsUserAgent = false) => {
     return new Promise((resolve, reject) => {
         const client = url.startsWith("https") ? https : http;
         
-        const options = {};
+        const options = {
+            timeout: 10000
+        };
         if (needsUserAgent) {
             options.headers = {
-                'User-Agent': 'SurakshaSathi/1.0'
+                'User-Agent': 'SurakshaSathi/1.0',
+                'Accept': 'application/json'
             };
         }
         
@@ -21,20 +24,33 @@ const makeRequest = (url, needsUserAgent = false) => {
             let data = "";
             res.on("data", (chunk) => data += chunk);
             res.on("end", () => {
+                // Check if response is HTML (error page) instead of JSON
+                if (data.includes('<!DOCTYPE html>') || data.includes('<html')) {
+                    console.error("Received HTML instead of JSON from OSRM:", data.substring(0, 200));
+                    reject(new Error("API returned HTML instead of JSON - possible rate limiting or API issue"));
+                    return;
+                }
                 try {
                     resolve(JSON.parse(data));
                 } catch (e) {
+                    console.error("JSON parse error:", e.message, "Data:", data.substring(0, 200));
                     reject(e);
                 }
             });
         });
         
         req.on("error", reject);
+        req.on("timeout", () => {
+            req.destroy();
+            reject(new Error("Request timeout"));
+        });
         req.end();
     });
 };
 
 // Geocode endpoint - convert place name to coordinates using Nominatim
+let lastGeocodeTime = 0;
+
 router.get("/geocode", async (req, res) => {
     try {
         const { q } = req.query;
@@ -43,6 +59,14 @@ router.get("/geocode", async (req, res) => {
         if (!q || q.length < 2) {
             return res.status(400).json({ msg: "Search query too short" });
         }
+        
+// Rate limiting: wait at least 2 seconds between requests (Nominatim requires 1 req/sec)
+        const now = Date.now();
+        const timeSinceLastRequest = now - lastGeocodeTime;
+        if (timeSinceLastRequest < 2100) {
+            await new Promise(resolve => setTimeout(resolve, 2100 - timeSinceLastRequest));
+        }
+        lastGeocodeTime = Date.now();
         
         // Use Nominatim (OpenStreetMap) for geocoding
         const encodedQuery = encodeURIComponent(q);
@@ -86,7 +110,8 @@ router.get("/route", async (req, res) => {
         // Use OSRM public API for routing
         const url = `https://router.project-osrm.org/route/v1/driving/${startLng},${startLat};${endLng},${endLat}?overview=full&geometries=geojson&steps=true`;
         
-        const data = await makeRequest(url);
+        // Add User-Agent header to avoid OSRM blocking the request
+        const data = await makeRequest(url, true);
         
         if (data.code !== "Ok") {
             return res.status(400).json({ msg: "No route found" });
