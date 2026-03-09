@@ -621,32 +621,7 @@ const startInputRef = useRef(null);
               </button>
             </div>
 
-            {/* Safety Score Display */}
-            {safetyScore !== null && (
-              <div className="mt-4 p-3 bg-slate-50 rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-sm text-slate-500">Overall Route Safety Score</div>
-                    <div className="flex items-center gap-2">
-                      <span className={`text-2xl font-bold ${getSafetyColor(safetyScore).text}`}>
-                        {safetyScore.toFixed(1)}/10
-                      </span>
-                      <span className={`text-sm px-2 py-1 rounded ${getSafetyColor(safetyScore).bg} ${getSafetyColor(safetyScore).text}`}>
-                        {getSafetyColor(safetyScore).label}
-                      </span>
-                    </div>
-                  </div>
-                  {safetyDetails && (
-                    <div className="flex gap-4 text-xs">
-                      <span className="flex items-center gap-1">👮 {safetyDetails.policeStations}</span>
-                      <span className="flex items-center gap-1">🏥 {safetyDetails.hospitals}</span>
-                      <span className="flex items-center gap-1">🛒 {safetyDetails.markets}</span>
-                      <span className="flex items-center gap-1 text-red-500">⚠️ {safetyDetails.reports}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
+      
           </div>
 
           {/* Turn-by-Turn Navigation Bar */}

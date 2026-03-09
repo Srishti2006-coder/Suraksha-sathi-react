@@ -25,7 +25,7 @@ const Home = ({ setPage }) => {
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div data-aos="fade-right">
               <h1 className="text-3xl lg:text-4xl font-extrabold leading-tight">
-                Empowering Women with Smart, Safe Routes — Anytime, Anywhere.
+                Empowering Everyone with Smart, Safe Routes — Anytime, Anywhere.
               </h1>
               <p className="mt-4 text-indigo-100 max-w-xl">
                 Find safer paths home using community reports, live safety insights
@@ -56,12 +56,21 @@ const Home = ({ setPage }) => {
 
             <div data-aos="zoom-in" className="relative">
               {/* Mini map placeholder */}
-              <div className="rounded-lg shadow-lg bg-white/20 h-[260px] min-h-[180px] flex items-center justify-center">
-                <div className="text-white/80 text-center">
-                  <div className="text-4xl mb-2">🗺️</div>
-                  <p className="text-sm">Interactive Map</p>
-                </div>
-              </div>
+            <div className="relative rounded-lg shadow-lg bg-white/20 h-[260px] min-h-[180px] overflow-hidden">
+  
+  <img
+    src="https://www.thestatesman.com/wp-content/uploads/2020/04/googl_ED-1024x683.jpg"
+    alt="Interactive Map"
+    className="w-full h-full object-cover"
+  />
+
+  <img
+    src="https://www.thestatesman.com/wp-content/uploads/2020/04/googl_ED-1024x683.jpg"
+    alt="location pin"
+    className="w-8 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+  />
+
+</div>
             </div>
           </div>
 
@@ -122,16 +131,16 @@ const Home = ({ setPage }) => {
               <div className="mt-8 grid lg:grid-cols-2 gap-6 items-center">
                 <div data-aos="fade-right">
                   <h3 className="text-lg font-semibold text-white">
-                    Why Women's Safety Matters
+                    Why Safety Matters
                   </h3>
                   <p className="mt-3 text-indigo-100">
-                    Every woman deserves to move freely without fear. Safe Route
+                    Everyone deserves to move freely without fear. Safe Route
                     Finder is built by students who believe technology can make our
                     streets safer — one route at a time.
                   </p>
                   <ul className="mt-4 text-sm text-indigo-100 space-y-2">
                     <li>🌍 120+ safe reports logged</li>
-                    <li>🚺 Designed by women, for women</li>
+                    <li>🚺 Designed by women</li>
                     <li>🕒 Real-time updates and SOS alerts</li>
                   </ul>
                 </div>
@@ -154,7 +163,7 @@ const Home = ({ setPage }) => {
               {/* Safety Tips Carousel */}
               <div className="mt-8" data-aos="fade-up">
                 <h4 className="text-sm font-semibold text-white mb-3">
-                  Safety Tips for Women
+                  Safety Tips
                 </h4>
                 <div className="bg-white/90 rounded-lg p-4 relative overflow-hidden">
                   <div className="text-indigo-900 text-sm">{tips[currentTip]}</div>
