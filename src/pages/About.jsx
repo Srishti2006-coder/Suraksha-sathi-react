@@ -1,6 +1,5 @@
+
 import React, { useState } from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 
 const About = ({ setPage }) => {
   const [contactForm, setContactForm] = useState({
@@ -25,10 +24,8 @@ const About = ({ setPage }) => {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      <Navbar setPage={setPage} />
-      
-      <div className="flex-grow max-w-6xl mx-auto mt-4 px-4 pb-8 w-full">
+    <div className="min-h-screen bg-white">
+      <div className="max-w-6xl mx-auto mt-4 px-4 pb-8 w-full">
         <div className="grid gap-8">
           {/* 1. Hero Section */}
           <div className="bg-gradient-to-r from-indigo-600 to-indigo-500 text-white rounded-lg p-8">
@@ -104,28 +101,28 @@ const About = ({ setPage }) => {
           {/* 4. Key Features */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="p-4 rounded-lg border bg-white shadow-sm text-center hover:shadow-md transition hover:-translate-y-1">
-              <div className="text-3xl">Saf</div>
+              <div className="text-3xl">🗺️</div>
               <div className="font-semibold mt-3">Safe Routes</div>
               <div className="text-sm text-slate-600 mt-1">
                 Route suggestions ranked by safety score.
               </div>
             </div>
             <div className="p-4 rounded-lg border bg-white shadow-sm text-center hover:shadow-md transition hover:-translate-y-1">
-              <div className="text-3xl">SOS</div>
+              <div className="text-3xl">🚨</div>
               <div className="font-semibold mt-3">SOS Alerts</div>
               <div className="text-sm text-slate-600 mt-1">
                 Quickly notify contacts and log location.
               </div>
             </div>
             <div className="p-4 rounded-lg border bg-white shadow-sm text-center hover:shadow-md transition hover:-translate-y-1">
-              <div className="text-3xl">Rep</div>
+              <div className="text-3xl">📣</div>
               <div className="font-semibold mt-3">Community Reports</div>
               <div className="text-sm text-slate-600 mt-1">
                 Submit and view reported areas on the map.
               </div>
             </div>
             <div className="p-4 rounded-lg border bg-white shadow-sm text-center hover:shadow-md transition hover:-translate-y-1">
-              <div className="text-3xl">Sec</div>
+              <div className="text-3xl">🔒</div>
               <div className="font-semibold mt-3">Privacy</div>
               <div className="text-sm text-slate-600 mt-1">
                 We keep user data safe and minimal.
@@ -246,8 +243,6 @@ const About = ({ setPage }) => {
           </div>
         </div>
       </div>
-
-      <Footer />
 
       {/* Success Modal */}
       {showModal && (
