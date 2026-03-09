@@ -259,4 +259,3 @@ const About = ({ setPage }) => {
 };
 
 export default About;
-
