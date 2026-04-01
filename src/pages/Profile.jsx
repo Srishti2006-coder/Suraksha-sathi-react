@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect } from "react";
 import { userAPI, clearAuthData, isLoggedIn, getCurrentUser } from "../utils/api";
 

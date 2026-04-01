@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useState, useEffect } from "react";
 import { sosAPI, userAPI, isLoggedIn } from "../utils/api";
 

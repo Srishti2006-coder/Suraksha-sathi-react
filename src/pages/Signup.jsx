@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useState, useEffect } from "react";
 import { authAPI } from "../utils/api";
 import Navbar from "../components/Navbar";

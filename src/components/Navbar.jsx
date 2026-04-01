@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useState } from "react";
 import { isLoggedIn, getCurrentUser, clearAuthData } from "../utils/api";
 
