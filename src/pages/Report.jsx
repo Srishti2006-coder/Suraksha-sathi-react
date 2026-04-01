@@ -18,7 +18,7 @@ const Report = ({ setPage }) => {
     }
     
     getLocation();
-  }, []);
+  }, [setPage]);
 
   const getLocation = () => {
     if (!navigator.geolocation) {

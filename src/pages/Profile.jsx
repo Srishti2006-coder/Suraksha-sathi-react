@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { useState, useEffect } from "react";
-import { userAPI, clearAuthData, isLoggedIn, getCurrentUser } from "../utils/api";
+import { userAPI, clearAuthData, isLoggedIn } from "../utils/api";
 
 const Profile = ({ setPage }) => {
   // State for user data
@@ -36,9 +36,6 @@ const Profile = ({ setPage }) => {
     alerts: 0
   });
 
-  // State for activity
-  const [activities, setActivities] = useState([]);
-  
   // Loading and error states
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -51,7 +48,7 @@ const Profile = ({ setPage }) => {
     }
     
     loadProfile();
-  }, []);
+  }, [setPage]);
 
   const loadProfile = async () => {
     try {

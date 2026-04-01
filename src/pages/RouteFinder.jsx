@@ -152,8 +152,6 @@ const RouteFinder = ({ setPage }) => {
   const [endLocation, setEndLocation] = useState(null);
   const [routes, setRoutes] = useState([]);
   const [selectedRoute, setSelectedRoute] = useState(null);
-  const [safetyScore, setSafetyScore] = useState(null);
-  const [safetyDetails, setSafetyDetails] = useState(null);
   const [reportsCount, setReportsCount] = useState(0);
   const [feedList, setFeedList] = useState([]);
   const [loading, setLoading] = useState(false);

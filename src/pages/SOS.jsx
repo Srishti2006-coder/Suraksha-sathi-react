@@ -19,7 +19,7 @@ const SOS = ({ setPage }) => {
     
     getLocation();
     loadEmergencyContacts();
-  }, []);
+  }, [setPage]);
 
   const getLocation = () => {
     if (!navigator.geolocation) {
@@ -59,7 +59,7 @@ const SOS = ({ setPage }) => {
     setError("");
 
     try {
-      const data = await sosAPI.sendSOS({
+      await sosAPI.sendSOS({
         lat: location.lat,
         lng: location.lng,
         message
