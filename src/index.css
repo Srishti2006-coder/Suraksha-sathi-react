@@ -175,3 +175,54 @@ transform:scale(1.05);
 box-shadow:0px 5px 15px rgba(0,0,0,0.2);
 
 }
+
+/* 
+  Add these lines to your src/index.css file 
+  This fixes the Leaflet map z-index overlapping the sticky navbar
+*/
+
+/* Force Leaflet map container to stay below the navbar */
+.leaflet-container {
+  z-index: 1 !important;
+}
+
+/* Leaflet pane z-indexes — keep them relative to the map container, not the page */
+.leaflet-map-pane {
+  z-index: 1 !important;
+}
+
+.leaflet-tile-pane {
+  z-index: 2 !important;
+}
+
+.leaflet-overlay-pane {
+  z-index: 4 !important;
+}
+
+.leaflet-shadow-pane {
+  z-index: 5 !important;
+}
+
+.leaflet-marker-pane {
+  z-index: 6 !important;
+}
+
+.leaflet-tooltip-pane {
+  z-index: 7 !important;
+}
+
+/* Popups should stay above markers but still below navbar */
+.leaflet-popup-pane {
+  z-index: 8 !important;
+}
+
+/* The dropdown suggestion boxes in RouteFinder should stay above the map */
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 9 !important;
+}
+
+/* Ensure the sticky navbar always wins */
+header.ss-nav {
+  z-index: 50 !important;
+}
