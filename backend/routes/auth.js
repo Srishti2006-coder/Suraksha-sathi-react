@@ -15,6 +15,7 @@ const isValidEmail = (email) => {
 
 // Signup route
 router.post("/signup", async (req, res) => {
+    console.log('📥 Signup request received:', req.body.email); // Debug: API hit & email
     const { name, email, password, phone, gender } = req.body;
 
     try {
@@ -31,6 +32,7 @@ router.post("/signup", async (req, res) => {
         // Check if email already exists
         const existingUser = await User.findOne({ email: email.toLowerCase() });
         if (existingUser) {
+            console.log('❌ Email already exists:', email);
             return res.status(400).json({ msg: "Email already exists" });
         }
 
@@ -45,10 +47,16 @@ router.post("/signup", async (req, res) => {
             phone: phone || "",
             gender: gender || ""
         });
+        
+        console.log('💾 Saving new user:', newUser.email, newUser.name); // Debug: before save
+        
         await newUser.save();
+        
+        console.log('✅ User saved successfully! ID:', newUser._id); // Debug: save success
 
         res.status(201).json({ msg: "User registered successfully" });
     } catch (err) {
+        console.error('💥 Signup error:', err.message, 'for email:', email); // Debug: errors
         res.status(500).json({ error: err.message });
     }
 });
