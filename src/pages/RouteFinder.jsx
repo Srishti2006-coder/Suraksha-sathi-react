@@ -289,7 +289,10 @@ const RouteFinder = ({ setPage }) => {
         .rf-page { font-family: 'DM Sans', sans-serif; }
 
         /* Fix leaflet z-index so it never bleeds over navbar */
-        .leaflet-container { z-index: 1 !important; }
+        .leaflet-container {
+          z-index: 1 !important;
+          isolation: isolate;
+        }
         .leaflet-top, .leaflet-bottom { z-index: 9 !important; }
         .leaflet-pane { z-index: 4 !important; }
         .leaflet-tile-pane { z-index: 2 !important; }
@@ -297,10 +300,37 @@ const RouteFinder = ({ setPage }) => {
         .leaflet-marker-pane { z-index: 6 !important; }
         .leaflet-popup-pane { z-index: 8 !important; }
 
+        /* Suggestion dropdowns must always appear above the map but below navbar */
+        .rf-suggestions-dropdown {
+          position: absolute;
+          z-index: 999 !important;
+          width: 100%;
+          background: white;
+          border: 1.5px solid #E2E8F0;
+          border-radius: 12px;
+          box-shadow: 0 8px 24px rgba(0,0,0,.12);
+          max-height: 220px;
+          overflow-y: auto;
+          top: calc(100% + 6px);
+          left: 0;
+        }
+
+        /* Input wrapper needs its own stacking context */
+        .rf-input-wrapper {
+          position: relative;
+          z-index: 10;
+        }
+
         .rf-card {
           background: white; border-radius: 16px;
           border: 1.5px solid #F1F5F9;
           box-shadow: 0 2px 12px rgba(0,0,0,.05);
+          /* NO overflow:hidden — it clips the suggestion dropdowns */
+        }
+
+        /* Only map wrapper needs overflow hidden */
+        .rf-map-wrapper {
+          border-radius: 12px;
           overflow: hidden;
         }
 
@@ -390,7 +420,7 @@ const RouteFinder = ({ setPage }) => {
           <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", gap:16 }}>
 
             {/* ── Search Card ── */}
-            <div className="rf-card" style={{ padding:"20px" }}>
+            <div className="rf-card" style={{ padding:"20px", position:"relative" }}>
               <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:16 }}>
                 <div style={{ width:32, height:32, borderRadius:9, background:"linear-gradient(135deg,#EFF6FF,#EEF2FF)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:15 }}>🗺️</div>
                 <div>
@@ -401,13 +431,15 @@ const RouteFinder = ({ setPage }) => {
 
               <div style={{ display:"flex", gap:10, flexWrap:"wrap" }}>
                 {/* Start input */}
-                <div style={{ flex:1, minWidth:200, position:"relative" }} ref={startInputRef}>
-                  <span style={{ position:"absolute", left:12, top:"50%", transform:"translateY(-50%)", fontSize:15 }}>🟢</span>
+                <div className="rf-input-wrapper" style={{ flex:1, minWidth:200 }} ref={startInputRef}>
+                  <div style={{ position:"relative" }}>
+                  <span style={{ position:"absolute", left:12, top:"50%", transform:"translateY(-50%)", fontSize:15, zIndex:1 }}>🟢</span>
                   <input className="rf-input" type="text" value={startInput} onChange={handleStartInputChange}
                     onFocus={() => startSuggestions.length > 0 && setShowStartSuggestions(true)}
                     placeholder="Start location…"/>
+                  </div>
                   {showStartSuggestions && startSuggestions.length > 0 && (
-                    <div style={{ position:"absolute", zIndex:50, width:"100%", background:"white", border:"1.5px solid #E2E8F0", borderRadius:12, boxShadow:"0 8px 24px rgba(0,0,0,.1)", maxHeight:220, overflowY:"auto", top:"calc(100% + 6px)" }}>
+                    <div className="rf-suggestions-dropdown">
                       {startSuggestions.map(place => (
                         <div key={place.place_id} className="rf-suggestion-item" onClick={() => selectStartLocation(place)}>
                           <div style={{ fontSize:13, fontWeight:600, color:"#0F172A" }}>{place.display_name.split(",").slice(0,2).join(",")}</div>
@@ -419,13 +451,15 @@ const RouteFinder = ({ setPage }) => {
                 </div>
 
                 {/* End input */}
-                <div style={{ flex:1, minWidth:200, position:"relative" }} ref={endInputRef}>
-                  <span style={{ position:"absolute", left:12, top:"50%", transform:"translateY(-50%)", fontSize:15 }}>🔴</span>
+                <div className="rf-input-wrapper" style={{ flex:1, minWidth:200 }} ref={endInputRef}>
+                  <div style={{ position:"relative" }}>
+                  <span style={{ position:"absolute", left:12, top:"50%", transform:"translateY(-50%)", fontSize:15, zIndex:1 }}>🔴</span>
                   <input className="rf-input" type="text" value={endInput} onChange={handleEndInputChange}
                     onFocus={() => endSuggestions.length > 0 && setShowEndSuggestions(true)}
                     placeholder="Destination…"/>
+                  </div>
                   {showEndSuggestions && endSuggestions.length > 0 && (
-                    <div style={{ position:"absolute", zIndex:50, width:"100%", background:"white", border:"1.5px solid #E2E8F0", borderRadius:12, boxShadow:"0 8px 24px rgba(0,0,0,.1)", maxHeight:220, overflowY:"auto", top:"calc(100% + 6px)" }}>
+                    <div className="rf-suggestions-dropdown">
                       {endSuggestions.map(place => (
                         <div key={place.place_id} className="rf-suggestion-item" onClick={() => selectEndLocation(place)}>
                           <div style={{ fontSize:13, fontWeight:600, color:"#0F172A" }}>{place.display_name.split(",").slice(0,2).join(",")}</div>
@@ -476,7 +510,7 @@ const RouteFinder = ({ setPage }) => {
 
             {/* ── Map ── */}
             <div className="rf-card" style={{ padding:16 }}>
-              <div style={{ height:460, borderRadius:12, overflow:"hidden" }}>
+              <div className="rf-map-wrapper" style={{ height:460 }}>
                 <MapContainer center={mapCenter} zoom={13} style={{ height:"100%", width:"100%" }}>
                   <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
                   <MapUpdater center={selectedRoute?.geometry?.[0]} geometry={selectedRoute?.geometry}/>

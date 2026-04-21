@@ -1,21 +1,33 @@
-# Route Finder Implementation TODO
+# Suraksha Sathi Signup Debug - TODO
 
-## Phase 1: Install Dependencies
-- [x] Install leaflet and react-leaflet packages
+## Status: 🔄 In Progress
 
-## Phase 2: Backend Updates
-- [x] Add /geocode endpoint (Nominatim)
-- [x] Add /route endpoint (OSRM)
-- [x] Enhance /safety-score endpoint
+### [✅] 1. Fix Database Connection
+- Edit `backend/db.js` to use `process.env.MONGODB_URI` instead of hardcoded Atlas URL
+- Ensure connects to local `mongodb://localhost:27017/suraksha-sathi`
 
-## Phase 3: Frontend API Updates
-- [x] Add geocode method
-- [x] Add getRoute method
+### [✅] 2. Add Debug Logging
+- Edit `backend/routes/auth.js` signup route
+- Add console.logs for: incoming request, user creation, save success/error
 
-## Phase 4: Frontend RouteFinder Updates
-- [x] Integrate Leaflet map
-- [x] Add place autocomplete
-- [x] Draw routes on map
-- [x] Display safety points on map
-- [x] Show real-time routes with safety scores
-- [x] Highlight safest route
+### [ ] 3. Restart Backend Server
+```
+cd backend
+npm start
+```
+- Verify "MongoDB Connected" logs local connection
+
+### [ ] 4. Test Signup Flow
+- React frontend: `npm start`
+- Fill signup form → submit
+- Check backend console for logs
+- MongoDB Compass: Verify new user in local `suraksha-sathi.users` collection
+
+### [ ] 5. Verify Complete Fix
+- Multiple signups → no duplicates (email unique)
+- Local DB populated, Atlas unchanged
+- Frontend shows success modal
+
+---
+
+**Next Step**: Complete step 1 & 2 (edits), then mark as done and proceed.
